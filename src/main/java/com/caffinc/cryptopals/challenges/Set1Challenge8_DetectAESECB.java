@@ -1,12 +1,8 @@
 package com.caffinc.cryptopals.challenges;
 
-import com.caffinc.cryptopals.HexUtil;
-import com.caffinc.cryptopals.XORUtil;
-
-import javax.crypto.Cipher;
-import javax.crypto.spec.SecretKeySpec;
-import java.security.GeneralSecurityException;
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 
 public class Set1Challenge8_DetectAESECB {
     private static String[] data = new String[]{"8a10247f90d0a05538888ad6205882196f5f6d05c21ec8dca0cb0be02c3f8b09e382963f443aa514daa501257b09a36bf8c4c392d8ca1bf4395f0d5f2542148c7e5ff22237969874bf66cb85357ef99956accf13ba1af36ca7a91a50533c4d89b7353f908c5a166774293b0bf6247391df69c87dacc4125a99ec417221b58170e633381e3847c6b1c28dda2913c011e13fc4406f8fe73bbf78e803e1d995ce4d",
@@ -214,26 +210,21 @@ public class Set1Challenge8_DetectAESECB {
             "a6cadd53a2621482b7d66ecc82dc4ea6431bc0191c3801ac6b705df38c7fffe469043e5002096aca4aaca5ef033cc2c5f884d5c339d9a648ffa9400098c7851b9f5990b3771fcf55b196b7c2723085ad11268daadd411967a6a545986c93b86b7f72387bf68dc6ae8dcfd21c7f57ba70b15f3f5517c5585f345ff751c7bf21dc1a33d396ba180a2cb22998fc05ca47b5525a2c150effb15ffd681006c479f0c5",
             "06df04188832b10afff94209d2aa1c8a123702de28234dcd3e0a7d36c1aa8449e6fa55e3e1e3d77d8424e87a45e38697755f84c49a99473797268113eb69098888947526035b246d00a630f6201ecc4075d8aa6604de73e2119e264e4c96751f2a67a2e46cf467a0df8f0520bcf4762b2715aba266d9b3f5e8fa67d12f9caac928b07ac3be99f41120655aa77f6433fc264673a92929e792187f87b5fda50cf2"};
 
-    public static void main(String[] args) throws GeneralSecurityException {
-        Cipher cipher = Cipher.getInstance("AES/ECB/NoPadding");
+    public static void main(String[] args) {
         for (int i = 0; i < data.length; i++) {
-            byte[] bytes = HexUtil.decodeHex(data[i]);
-            cipher.init(Cipher.DECRYPT_MODE, new SecretKeySpec(Arrays.copyOfRange(bytes, 0, 16), "AES"));
-            byte[] raw = cipher.doFinal(bytes);
-            System.out.println("Index i " + i);
-            System.out.println(splitToNChar(HexUtil.encodeHex(raw), 32));
-            System.out.println(splitToNChar(HexUtil.encodeHex(XORUtil.repeatingXor(Arrays.copyOfRange(raw, 0, 16), raw)), 32));
+            List<String> blocks = splitToNChar(data[i], 32);
+            if (blocks.size() != new HashSet<>(blocks).size()) {
+                System.out.println(i + "\n" + data[i]);
+            }
         }
     }
 
-    private static String splitToNChar(String text, int size) {
-        StringBuilder parts = new StringBuilder();
-
+    private static List<String> splitToNChar(String text, int size) {
+        List<String> parts = new ArrayList<>();
         int length = text.length();
         for (int i = 0; i < length; i += size) {
-            parts.append(text, i, Math.min(length, i + size));
-            parts.append("\n");
+            parts.add(text.substring(i, Math.min(length, i + size)));
         }
-        return parts.toString();
+        return parts;
     }
 }
