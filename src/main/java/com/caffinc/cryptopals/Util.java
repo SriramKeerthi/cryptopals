@@ -30,6 +30,19 @@ public class Util {
         return blocks;
     }
 
+    public static byte[] applyPadding(byte[] data, int blockSize) {
+        int paddingBytes = blockSize - data.length % blockSize;
+        if (paddingBytes == 0) {
+            paddingBytes = blockSize;
+        }
+        byte[] result = new byte[data.length + paddingBytes];
+        System.arraycopy(data, 0, result, 0, data.length);
+        for (int i = data.length; i < result.length; i++) {
+            result[i] = 0x04;
+        }
+        return result;
+    }
+
     public static void main(String[] args) {
         System.out.println(hammingDistance("this is a test".getBytes(), "wokka wokka!!!".getBytes()));
     }

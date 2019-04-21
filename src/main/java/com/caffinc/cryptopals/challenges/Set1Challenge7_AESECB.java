@@ -1,9 +1,9 @@
 package com.caffinc.cryptopals.challenges;
 
+import com.caffinc.cryptopals.AESUtil;
 import com.caffinc.cryptopals.Base64Util;
 
 import javax.crypto.Cipher;
-import javax.crypto.spec.SecretKeySpec;
 import java.security.GeneralSecurityException;
 
 public class Set1Challenge7_AESECB {
@@ -74,8 +74,7 @@ public class Set1Challenge7_AESECB {
 
     public static void main(String[] args) throws GeneralSecurityException {
         byte[] bytes = Base64Util.fromBase64(data);
-        Cipher cipher = Cipher.getInstance("AES/ECB/NoPadding");
-        cipher.init(Cipher.DECRYPT_MODE, new SecretKeySpec("YELLOW SUBMARINE".getBytes(), "AES"));
-        System.out.println(new String(cipher.doFinal(bytes)));
+        System.out.println(new String(AESUtil.aesecb(Cipher.DECRYPT_MODE, bytes, "YELLOW SUBMARINE".getBytes())));
     }
+
 }
