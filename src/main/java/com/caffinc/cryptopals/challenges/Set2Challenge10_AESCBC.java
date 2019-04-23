@@ -73,7 +73,10 @@ public class Set2Challenge10_AESCBC {
             "kkIzWhQ5Rxd/vnM2QQr9Cxa2J9GXEV3kGDiZV90+PCDSVGY4VgF8y7GedI1h\n";
 
     public static void main(String[] args) throws GeneralSecurityException {
-        byte[] bytes = Base64Util.fromBase64(data);
-        System.out.println(new String(AESUtil.aescbc(Cipher.DECRYPT_MODE, "YELLOW SUBMARINE".getBytes(), new byte[16], bytes)));
+        byte[] bytes = Base64Util.decode(data);
+        byte[] iv = new byte[16];
+        byte[] key = "YELLOW SUBMARINE".getBytes();
+        System.out.println(new String(AESUtil.aescbc(Cipher.DECRYPT_MODE, key, iv, AESUtil.aescbc(Cipher.ENCRYPT_MODE, key, iv, AESUtil.aescbc(Cipher.DECRYPT_MODE, "YELLOW SUBMARINE".getBytes(), iv, bytes)))));
+        System.out.println(new String(AESUtil.aescbc(Cipher.DECRYPT_MODE, "YELLOW SUBMARINE".getBytes(), iv, bytes)));
     }
 }

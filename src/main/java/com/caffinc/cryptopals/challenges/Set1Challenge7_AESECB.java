@@ -73,7 +73,7 @@ public class Set1Challenge7_AESECB {
             "S15AVD2QS1V6fhRimJSVyT6QuGb8tKRsl2N+a2Xze36vgMhw7XK7zh//jC2H";
 
     public static void main(String[] args) throws GeneralSecurityException {
-        byte[] bytes = Base64Util.fromBase64(data);
+        byte[] bytes = Base64Util.decode(data);
         System.out.println(new String(AESUtil.aesecb(Cipher.DECRYPT_MODE, bytes, "YELLOW SUBMARINE".getBytes())));
     }
 

@@ -1,5 +1,7 @@
 package com.caffinc.cryptopals.challenges;
 
+import com.caffinc.cryptopals.Util;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -212,19 +214,14 @@ public class Set1Challenge8_DetectAESECB {
 
     public static void main(String[] args) {
         for (int i = 0; i < data.length; i++) {
-            List<String> blocks = splitToNChar(data[i], 32);
-            if (blocks.size() != new HashSet<>(blocks).size()) {
-                System.out.println(i + "\n" + data[i]);
+            if (isECB(data[i])) {
+                System.out.println(i + ": " + data[i]);
             }
         }
     }
 
-    private static List<String> splitToNChar(String text, int size) {
-        List<String> parts = new ArrayList<>();
-        int length = text.length();
-        for (int i = 0; i < length; i += size) {
-            parts.add(text.substring(i, Math.min(length, i + size)));
-        }
-        return parts;
+    public static boolean isECB(String data) {
+        List<String> blocks = Util.splitToNChar(data, 32);
+        return (blocks.size() != new HashSet<>(blocks).size());
     }
 }

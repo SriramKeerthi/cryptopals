@@ -77,7 +77,7 @@ public class Set1Challenge6_BreakRepeatingKeyXOR {
             "Jk8DCkkcC3hFMQIEC0EbAVIqCFZBO1IdBgZUVA4QTgUWSR4QJwwRTWM=";
 
     public static void main(String[] args) {
-        byte[] bytes = Base64Util.fromBase64(data);
+        byte[] bytes = Base64Util.decode(data);
         List<Integer> keySizes = getPossibleKeySize(bytes);
         for (int keySize : keySizes) {
             byte[][] blocks = Util.getBlocks(bytes, keySize);
